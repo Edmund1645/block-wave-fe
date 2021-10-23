@@ -5,7 +5,11 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['disabled'],
+      cursor: ['disabled'],
+      textColor: ['disabled'],
+    },
   },
   plugins: [],
 };
