@@ -6,6 +6,7 @@ import abi from './utils/WavePortal.json'
 
 function App() {
   const [loading, setLoading] = useState(false);
+  const [isWrongChain, setIsWrongChain] = useState(false);
   const [currentAccount, setCurrentAccount] = useState('');
   const [waveText, setWaveText] = useState('');
   const [allWaves, setAllWaves] = useState([]);
@@ -84,6 +85,15 @@ function App() {
       console.log('we have the eth object', ethereum)
     }
 
+    ethereum.on('chainChanged', (chainId) => {
+      if (chainId !== '0x4') {
+        setIsWrongChain(true)
+      } else {
+        setIsWrongChain(false)
+        getAllWaves()
+      }
+    });
+
     ethereum.request({ method: 'eth_accounts' }).then(accounts => {
       if (accounts.length > 0) {
         const account = accounts[0]
@@ -113,10 +123,13 @@ function App() {
 
   useEffect(() => {
     checkIfWalletIsConnected()
-  }, [])
+    return ()=> window.ethereum && window.ethereum.removeAllListeners()
+  },[])
   return (
-    <div className="flex justify-center w-full mt-16">
+    <div className="flex justify-center w-full mt-16 px-4 md:px-0">
       <div className="flex flex-col justify-center max-w-screen-sm">
+        { isWrongChain && <p className="text-center p-1 bg-red-100 mb-4 rounded-md text-red-500 border border-red-400">This dapp only works on the rinkeby testnet :(</p>}
+
         <div className="text-center font-semibold text-3xl">👋 Hey there!</div>
 
         <div className="text-center mt-4 text-gray-500">I am Edmund and I like playing on the blockchain. Connect your Ethereum wallet and wave at me!</div>
