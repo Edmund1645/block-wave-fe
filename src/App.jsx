@@ -121,19 +121,24 @@ function App() {
 
         <div className="text-center mt-4 text-gray-500">I am Edmund and I like playing on the blockchain. Connect your Ethereum wallet and wave at me!</div>
 
-        {currentAccount ? null : (
+        {!currentAccount && (
           <button className="mt-4 rounded-md p-4 border-0 bg-blue-200" onClick={connectWallet}>
             Connect Wallet
           </button>
         )}
 
-        {currentAccount && <p className="text-center p-2 rounded-md bg-yellow-100">Connected {currentAccount}</p>}
 
-        <input className='border border-gray-300 mt-5 p-3' placeholder='Enter a message' onChange={(e) => setWaveText(e.target.value)} value={waveText} type="text" />
+        { currentAccount &&(
+          <>
+            <p className="text-center p-2 rounded-md bg-yellow-100">Connected {currentAccount}</p>
+            <input className='border border-gray-300 mt-5 p-3' placeholder='Enter a message' onChange={(e) => setWaveText(e.target.value)} value={waveText} type="text" />
 
-        <button disabled={loading} className="mt-4 rounded-md p-4 border-0 disabled:cursor-not-allowed disabled:text-black disabled:bg-gray-200 bg-purple-500 text-white" onClick={wave}>
-          { loading? 'loading': 'Wave at Me'}
-        </button>
+            <button disabled={loading} className="mt-4 rounded-md p-4 border-0 disabled:cursor-not-allowed disabled:text-black disabled:bg-gray-200 bg-purple-500 text-white" onClick={wave}>
+              {loading ? 'sending wave...' : 'Wave at Me'}
+            </button>
+          </>
+        )
+        }
 
         {allWaves.map((wave, index) => {
           return (
